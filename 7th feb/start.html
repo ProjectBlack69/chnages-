@@ -1,0 +1,35 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Righteous&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Righteous&display=swap" rel="stylesheet">
+  <title>Employee Portal</title>
+  <link rel="stylesheet" href="{% static 'css/startemployee.css' %}">
+</head>
+<body>
+
+  <div class="container">
+    <div class="content">
+      <h1>Welcome to the Cruise Ship Employee Portal</h1>
+      <p>Join us on an exciting journey! Whether you're a current employee or looking to start your career, we're here for you!</p>
+
+      <div class="buttons">
+        <a href="{% url 'employee-login' %}" class="btn">Employee Login</a>
+        <a href="{% url 'apply' %}" class="btn">Apply for a job</a>
+      </div>
+
+      <!-- Add "Go Back to Base" button/link -->
+      <div class="go-back-link">
+        <a href="/" class="go-back-btn">Go Back to Home Page</a>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

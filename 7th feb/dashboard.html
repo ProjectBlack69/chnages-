@@ -1,0 +1,357 @@
+{% load static %}
+
+<!DOCTYPE html><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{% csrf_token %}">
+    
+    <link rel="stylesheet" href="{% static 'css/empdashboard.css' %}">
+    <link rel="stylesheet" href="{% static 'css/attendance.css' %}">
+    <link rel="stylesheet" href="{% static 'css/payroll.css' %}">
+    <link rel="stylesheet" href="{% static 'css/training.css' %}">
+    <link rel="stylesheet" href="{% static 'css/empprofile.css' %}">
+    <link rel="stylesheet" href="{% static 'css/task.css' %}">
+    <link rel="stylesheet" href="{% static 'css/notification.css' %}">
+
+
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+
+    <title>Employee Dashboard</title>
+</head>
+<body>
+    <nav>
+        <div class="logo-name">
+            <div class="profile-image">
+                <img src="{% static 'assets/profile.png' %}" alt="profile">
+            </div>
+
+            <span class="logo_name">Employee Portal</span>
+        </div>
+
+        <div class="menu-items">
+            <ul class="nav-links">
+                <li><a href="{% url 'employee-dashboard' %}">
+                    <i class="uil uil-estate"></i>
+                    <span class="link-name">Dashboard</span>
+                </a></li>
+                <li><a href="{% url 'employee-profile' %}">
+                    <i class="uil-user-circle"></i>
+                    <span class="link-name">Profile</span>
+                </a></li>
+                <li><a href="{% url 'attendance' %}">
+                    <i class="uil uil-chart"></i>
+                    <span class="link-name">Attendance</span>
+                </a></li>
+                <li><a href="{% url 'task' %}">
+                    <i class="uil uil-clipboard-alt"></i>
+                    <span class="link-name">Tasks and Schedule</span>
+                </a></li>
+                <li><a href="{% url 'training' %}">
+                    <i class="uil uil-chart"></i>
+                    <span class="link-name">Training</span>
+                </a></li>
+                <li><a href="{% url 'payroll' %}">
+                    <i class="uil uil-chart"></i>
+                    <span class="link-name">Payroll</span>
+                </a></li>
+                <li><a href="{% url 'employee-notifications' %}">
+                    <i class="uil uil-bell"></i>
+                    <span class="link-name">Notifications</span>
+                </a></li>
+                <li><a href="{% url 'task' %}">
+                    <i class="uil uil-comments"></i>
+                    <span class="link-name">Support and Help</span>
+                </a></li>
+            </ul>
+            
+            <ul class="logout-mode">
+                <li><a href="{% url 'employee-logout' %}">
+                    <i class="uil uil-signout"></i>
+                    <span class="link-name">Logout</span>
+                </a></li>
+                </div>
+            </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Dashboard Section -->
+    <section id="dashboard" class="dashboard">
+        <div class="top">
+            <div class="emp-clickable">
+                <i class="uil uil-bars sidebar-toggle"></i>
+
+                <div class="search-box">
+                    <i class="uil uil-search"></i>
+                    <input type="text" placeholder="Search here...">
+                </div>
+            </div>
+            <div class="notification-dropdown" id="notification-dropdown">
+                <button class="dropbtn" onclick="toggleNotificationDropdown()">
+                    <i class="fas fa-bell"></i>
+                    {% if unread_count > 0 %}
+                        <span class="notification-badge">{{ unread_count }}</span>
+                    {% endif %}
+                </button>
+            
+                <div class="dropdown-content" id="notificationDropdown">
+                    {% if unread_notifications %}
+                        {% for notification in unread_notifications %}
+                            <a href="{% url 'employee-notifications' %}" class="notification-link">
+                                <strong>{{ notification.title }}</strong><br>
+                                <small>{{ notification.message|truncatewords:10 }}</small>
+                            </a>
+                        {% endfor %}
+                        <div class="actions">
+                            <a href="#" onclick="markNotificationsRead(); return false;" class="mark-read">Mark All as Read</a>
+                            <a href="{% url 'employee-notifications' %}" class="view-all">View All</a>
+                        </div>
+                    {% else %}
+                        <p>No new notifications.</p>
+                        <div class="actions">
+                            <a href="{% url 'employee-notifications' %}" class="view-all">View All</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>                                                                                     
+        </div>
+
+    {% block content %}
+
+        <div class="dash-content">
+            <div class="overview-card">
+                <div class="overview">
+                    <div class="title">
+                        <i class="uil uil-analytics"></i>
+                        <span class="text">Dashboard</span>
+                    </div>
+            
+                    <div class="boxes">
+                        <!-- Attendance -->
+                        <div class="box box1">
+                            <i class="uil uil-clock-three"></i>
+                            <span class="text">Attendance</span>
+                            <span class="number">{{ attendance_count }}</span>
+                        </div>
+            
+                        <!-- Current Shift -->
+                        <div class="box box2">
+                            <i class="uil uil-info-circle"></i>
+                            <span class="text">Current Shift - Today's Shift</span>
+                            <span class="number" id="current-shift-time" 
+                                {% if current_shift %}
+                                    data-start-time="{{ current_shift.start_time|date:'Y-m-d H:i:s' }}"
+                                    data-end-time="{{ current_shift.end_time|date:'Y-m-d H:i:s' }}"
+                                {% else %}
+                                    --
+                                {% endif %}
+                            >
+                                {% if current_shift %}
+                                    {{ current_shift.start_time|date:"h:i A" }} - {{ current_shift.end_time|date:"h:i A" }}
+                                {% else %}
+                                    No current shift
+                                {% endif %}
+                            </span>
+                        </div>
+            
+                        <!-- Upcoming Shift -->
+                        <div class="box box3">
+                            <i class="uil uil-redo"></i>
+                            <span class="text">Upcoming Shift - Tomorrow's Shift</span>
+                            <span class="number" id="upcoming-shift-time"
+                                {% if upcoming_shift %}
+                                    data-start-time="{{ upcoming_shift.start_time|date:'Y-m-d H:i:s' }}"
+                                {% else %}
+                                    --
+                                {% endif %}
+                            >
+                                {% if upcoming_shift %}
+                                    {{ upcoming_shift.start_time|date:"h:i A" }} - {{ upcoming_shift.end_time|date:"h:i A" }}
+                                {% else %}
+                                    No upcoming shift
+                                {% endif %}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>            
+
+            <section class="profile-card-section">
+                <div class="title">
+                    <i class="uil uil-user"></i>
+                    <span class="text">Profile Details</span>
+                </div>
+            
+                <div class="profile-card-data">
+                    <div class="profile-card-data-item name">
+                        <i class="uil uil-user"></i>
+                        <span class="profile-card-data-title">Name:</span>
+                        <span class="profile-card-data-list">{{ employee.first_name }} {{ employee.last_name }}</span>
+                    </div>
+                    <div class="profile-card-data-item id">
+                        <i class="fas fa-id-badge"></i>
+                        <span class="profile-card-data-title">ID:</span>
+                        <span class="profile-card-data-list">{{ employee.employee_id }}</span>
+                    </div>
+                    <div class="profile-card-data-item job-role">
+                        <i class="uil uil-briefcase"></i>
+                        <span class="profile-card-data-title">Job Role:</span>
+                        <span class="profile-card-data-list">{{ employee.job_role }}</span>
+                    </div>
+                    <div class="profile-card-data-item department">
+                        <i class="uil uil-building"></i>
+                        <span class="profile-card-data-title">Department:</span>
+                        <span class="profile-card-data-list">
+                            {% if employee.department %}
+                                {{ employee.department.name }}
+                            {% else %}
+                                N/A
+                            {% endif %}
+                        </span>
+                    </div>
+                    <div class="profile-card-data-item phone">
+                        <i class="uil uil-phone"></i>
+                        <span class="profile-card-data-title">Phone:</span>
+                        <span class="profile-card-data-list">
+                            {% if employee.phone %}
+                                {{ employee.phone }}
+                            {% else %}
+                                N/A
+                            {% endif %}
+                        </span>
+                    </div>
+                    <div class="profile-card-data-item email">
+                        <i class="uil uil-envelope"></i>
+                        <span class="profile-card-data-title">Email:</span>
+                        <span class="profile-card-data-list">{{ employee.user.email }}</span>
+                    </div>
+                </div>                
+            </section>                      
+        
+            <section id="current-shift" class="current-shift">
+                <div class="title">
+                    <i class="uil uil-clock"></i>
+                    <span class="text">Current Shift Details</span>
+                </div>
+        
+                {% if current_shift %}
+                <div class="shift-card">
+                    <div class="shift-info">
+                        <p><i class="uil uil-user"></i> <span class="label">Role:</span> {{ current_shift.employee.position.title }}</p>
+                        <p><i class="uil uil-location-point"></i> <span class="label">Department:</span> {{ current_shift.employee.department.name }}</p>
+                        <p><i class="uil uil-schedule"></i> 
+                            <span class="label">Shift Timing:</span> 
+                            {{ current_shift.start_time|date:"h:i A" }} - {{ current_shift.end_time|date:"h:i A" }}
+                        </p>
+                        <p><i class="uil uil-user-circle"></i> <span class="label">Supervisor:</span> 
+                            {% if supervisor %}
+                                {{ supervisor.first_name }} {{ supervisor.last_name }} ({{ supervisor.job_role }})
+                            {% else %}
+                                No Supervisor
+                            {% endif %}
+                        </p>
+                    </div>
+        
+                    <div class="shift-status">
+                        <p class="status in-progress" id="status">In Progress</p>
+                        <div class="progress-bar">
+                            <div class="progress" id="shift-progress" 
+                                style="width: 0%;" 
+                                data-start-time="{{ start_time }}" 
+                                data-end-time="{{ end_time }}"
+                                data-virtual-time="{{ virtual_time }}">
+                            </div>
+                        </div>
+                        <!-- Display the countdown timer -->
+                        <p id="countdown-timer" class="countdown">Loading...</p>
+                    </div>                                                                                                  
+                </div>
+                {% else %}
+                <div class="shift-info no-shift">
+                    <p><i class="uil uil-info-circle"></i> <span class="label">Message:</span> No current shift assigned.</p>
+                </div>
+                {% endif %}
+            </section>
+        
+            <section class="shift-request">
+                <div class="title">
+                    <i class="uil uil-user-check"></i>
+                    <span class="text">Request Shift Swap</span>
+                </div>
+                <form method="POST" action="{% url 'request_shift_swap' %}">
+                    {% csrf_token %}
+                    <label for="shift-date">Select Shift Date:</label>
+                    <input type="date" id="shift-date" name="shift_date" required>
+            
+                    <label for="swap-with">Select Swap Employee:</label>
+                    <select id="swap-with" name="swap_with" required>
+                        <option value="">Select Employee</option>
+                        {% for shift in swap_candidates %}
+                        <option value="{{ shift.id }}">{{ shift.employee.user.get_full_name }} ({{ shift.shift_type }})</option>
+                        {% endfor %}
+                    </select>
+            
+                    <label for="swap-reason">Reason for Swap:</label>
+                    <textarea id="swap-reason" name="swap_reason" placeholder="Explain your reason for the shift swap..." required></textarea>
+            
+                    <button type="submit" id="submit-btn" disabled>Submit Request</button>
+                </form>
+            </section>
+            
+            <div class="activity-card">
+                <section class="activity">
+                    <div class="title">
+                        <i class="uil uil-history"></i>
+                        <span class="text">Activity Data</span>
+                    </div>
+                
+                    <div class="activity-data">
+                        {% for activity in activity_data %}
+                        <div class="data task">
+                            <span class="data-title">Task</span>
+                            <span class="data-list">{{ activity.shift.shift_type }}</span>
+                        </div>
+                        <div class="data shift">
+                            <span class="data-title">Deck</span>
+                            <span class="data-list">{{ activity.shift.employee.department }}</span>
+                        </div>
+                        <div class="data date">
+                            <span class="data-title">Date</span>
+                            <span class="data-list">{{ activity.date }}</span>
+                        </div>
+                        <div class="data time">
+                            <span class="data-title">Time</span>
+                            <span class="data-list">{{ activity.shift.start_time }}</span>
+                        </div>
+                        <div class="data status">
+                            <span class="data-title">Status</span>
+                            <span class="data-list">{{ activity.attendance_status }}</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </section>
+            </div>            
+        </div>
+      
+
+    {% endblock %}
+
+    <script src="{% static 'javascript/empdashboard.js' %}"></script>   
+    <script src="{% static 'javascript/empprofile.js' %}"></script>
+    <script src="{% static 'javascript/task.js' %}"></script>
+</body>
+</html>

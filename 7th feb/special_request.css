@@ -1,0 +1,168 @@
+/* Special Request Main Section */
+.special-request-main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    background-color: rgba(255, 255, 255, 0.3);
+    margin: 1% 29%;
+    backdrop-filter: blur(50px);
+    border-radius: 12px;
+}
+
+.special-request-container {
+    width: 100%;
+    min-width: 1000px; /* Limit form width for readability */
+    border-radius: 10px;
+    padding: 30px;
+    height: 100%;
+}
+
+.special-request-container h1 {
+    font-size: 2rem; /* Slightly bigger for better emphasis */
+    font-weight: 700; /* Stronger bold effect */
+    font-family: 'Poppins', sans-serif; /* Modern, sleek font */
+    color: #222; /* Darker shade for better contrast */
+    text-align: center;
+    margin-bottom: 20px;
+    letter-spacing: 1px; /* Slight letter spacing for premium feel */
+    text-transform: capitalize; /* Stylish capitalization */
+    position: relative; /* Needed for decorative effects */
+}
+
+/* Adding a stylish underline effect */
+.special-request-container h1::after {
+    content: "";
+    display: block;
+    width: 80px;
+    height: 4px;
+    background-color: #007bff; /* Highlight color */
+    margin: 10px auto 0;
+    border-radius: 2px;
+}
+
+
+.special-request-container form {
+    display: flex;
+    flex-direction: column;
+}
+
+.special-request-container .form-group {
+    margin-bottom: 20px;
+}
+
+.special-request-container .form-group label {
+    display: block;
+    font-size: 1.1rem;  /* Slightly larger for better readability */
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif; /* Modern, clean font */
+    color: #333; /* Darker shade for better contrast */
+    margin-bottom: 6px; /* Slightly reduced for tighter design */
+    letter-spacing: 0.5px; /* Enhances readability */
+    text-transform: capitalize; /* More stylish formatting */
+    transition: color 0.3s ease-in-out;
+}
+
+/* Hover Effect for Labels */
+.special-request-container .form-group label:hover {
+    color: #007bff; /* Change color to blue on hover */
+    cursor: pointer;
+}
+
+.special-request-container .form-group select,
+.special-request-container .form-group textarea,
+.special-request-container .form-group input[type="text"] {
+    width: 100%;
+    padding: 12px; /* Slightly increased for a more premium feel */
+    font-size: 1rem;
+    font-family: 'Poppins', sans-serif; /* Sleek and modern font */
+    border: 2px solid #ddd;
+    border-radius: 8px; /* Softer rounded edges */
+    outline: none;
+    background-color: #f9f9f9; /* Light background for a modern touch */
+    transition: all 0.3s ease-in-out;
+}
+
+/* Hover Effect */
+.special-request-container .form-group select:hover,
+.special-request-container .form-group textarea:hover,
+.special-request-container .form-group input[type="text"]:hover {
+    border-color: #bbb;
+}
+
+/* Focus Effect - Glowing Border */
+.special-request-container .form-group select:focus,
+.special-request-container .form-group textarea:focus,
+.special-request-container .form-group input[type="text"]:focus {
+    border-color: #007bff;
+    background-color: #fff;
+    box-shadow: 0 0 6px rgba(0, 123, 255, 0.4);
+}
+
+/* Improved Textarea Resizing */
+.special-request-container .form-group textarea {
+    min-height: 50px; /* Ensures enough space for text input */
+    resize: vertical; /* Allows resizing but prevents excessive expansion */
+}
+
+.special-request-container textarea {
+    width: 100%;
+    height: auto;
+    min-height: 10rem; /* Ensures 4 rows */
+    max-height: 10rem; /* Prevents expansion */
+    overflow-y: auto; /* Adds scrolling if needed */
+    resize: none; /* Disables manual resizing */
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+/* Optional focus effect */
+.special-request-container textarea:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 4px rgba(0, 123, 255, 0.5);
+}
+
+/* Select Dropdown Styling */
+.special-request-container .form-group select {
+    appearance: none; /* Removes default browser styling */
+    background: url('data:image/svg+xml;utf8,<svg fill="%23555" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat right 12px center;
+    background-size: 18px;
+    padding-right: 35px; /* Adjust for custom arrow */
+    cursor: pointer;
+}
+
+.special-request-container .btn-submit {
+    background-color: #007bff;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 25%;
+    margin: 5% 37%;
+}
+
+.special-request-container .btn-submit:hover {
+    background-color: #0056b3;
+}
+
+.special-request-container .btn-submit:active {
+    background-color: #004494;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .special-request-container {
+        padding: 20px;
+    }
+
+    .special-request-container h1 {
+        font-size: 1.5rem;
+    }
+}

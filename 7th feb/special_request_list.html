@@ -1,0 +1,74 @@
+{% extends 'admin_app/base.html' %}
+
+{% block content %}
+<div class="custom-container">
+    <h1>Special Requests</h1>
+    <table class="custom-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Customer Username</th>
+                <th>Request Type</th>
+                <th>Details</th>
+                <th>Status</th>
+                <th>Priority Level</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for special_request in special_requests %}
+            <tr>
+                <td>{{ special_request.id }}</td>
+                <td>{{ special_request.customer.user.username }}</td>
+                <td>{{ special_request.request_type }}</td>
+                <td>{{ special_request.details }}</td>
+                <td id="status-{{ special_request.id }}">{{ special_request.status }}</td>
+                <td>{{ special_request.priority_level }}</td>
+                <td>
+                    {% if special_request.status != "Approved" %}
+                        <button class="custom-btn-success approve-btn" data-id="{{ special_request.id }}">
+                            Approve
+                        </button>
+                    {% endif %}
+                    <a href="{% url 'edit_model' model_name='specialrequest' pk=special_request.pk %}" class="custom-btn-warning">Edit</a>
+                    <a href="{% url 'delete_model' model_name='specialrequest' pk=special_request.pk %}" class="custom-btn-danger">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{% url 'admin_dashboard' %}" class="custom-btn-secondary">Back to Dashboard</a>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".approve-btn").forEach(button => {
+            button.addEventListener("click", async function () {
+                const requestId = this.getAttribute("data-id");
+
+                try {
+                    const response = await fetch(`/admin/special-requests/approve/${requestId}/`, {
+                        method: "POST",
+                        headers: {
+                            "X-CSRFToken": "{{ csrf_token }}",
+                            "Content-Type": "application/json"
+                        }
+                    });
+
+                    if (response.ok) {
+                        document.getElementById(`status-${requestId}`).innerText = "Approved";
+                        this.remove(); // Remove the button after approval
+                        alert("Special request approved and notification sent.");
+                    } else {
+                        alert("Failed to approve request.");
+                    }
+                } catch (error) {
+                    console.error("Error:", error);
+                    alert("An error occurred. Please try again.");
+                }
+            });
+        });
+    });
+</script>
+
+{% endblock %}

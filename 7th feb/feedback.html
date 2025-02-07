@@ -1,0 +1,440 @@
+{% extends 'customer/profile.html' %}
+
+{% block title %}Feedback and Reviews{% endblock %}
+
+{% block profile_extra %}
+<style>
+    .page-wrapper {
+        background: url(../../static/assets/profile-bg.jpg);
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+    }
+
+    .feedback-list {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 20px;
+        margin-top: 20px;
+    }
+
+    .feedback-list li {
+        border: 1px solid #ddd;
+        padding: 15px;
+        list-style-type: none;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+    }
+
+    .feedback-list h4 {
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+
+    .feedback-list p {
+        font-size: 14px;
+        margin: 5px 0;
+    }
+
+    .feedback-btn {
+        margin-top: 20px;
+    }
+
+    /* Modal styles */
+    .feedback-modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .feedback-modal-content {
+        background-color: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        padding: 20px;
+        max-width: 500px;
+        max-height: 500px;
+        overflow-y: auto;
+        margin: 12% auto;
+        text-align: center; /* Ensure center alignment */
+        animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .feedback-title {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: space-between;
+    }
+
+    .feedback-close {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #333333;
+        cursor: pointer;
+        transition: color 0.3s ease;
+    }
+
+    .feedback-close:hover {
+        color: #ff0000;
+    }
+
+    .feedback-modal-header {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 10px;
+        margin-left: 25%;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        background: linear-gradient(90deg, #4facfe, #00f2fe);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        transition: transform 0.3s ease, text-shadow 0.3s ease;
+    }
+
+    .feedback-modal-header:hover {
+        transform: scale(1.05); /* Slightly enlarges the text */
+    }
+
+
+    /* Container for the feedback list */
+    .feedback-modal-list {
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 16px; /* Space between feedback items */
+    } 
+
+    .feedback-modal-list ul {
+        list-style: none;
+    }
+
+    /* Feedback card container */
+    .feedback-card {
+        background-color:rgb(178, 178, 178);
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        margin: 10px auto;
+        max-width: 400px;
+        text-align: center; /* Center align content */
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        font-family: 'Arial', sans-serif; /* Modern, clean font */
+    }
+
+    /* Hover effect for the card */
+    .feedback-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Customer name */
+    .feedback-customer {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    /* Cruise information */
+    .feedback-cruise {
+        font-size: 1.2rem;
+        color: #555;
+        margin-bottom: 8px;
+    }
+
+    /* Feedback comments */
+    .feedback-comments {
+        font-size: 1rem;
+        color: #666;
+        font-style: italic;
+        margin: 8px 0;
+    }
+
+    /* Rating */
+    .feedback-rating {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #4facfe;
+        margin-top: 10px;
+    }
+
+    /* Strong text styling */
+    .feedback-card p strong {
+        color:rgb(0, 0, 0);
+        font-weight: 700;
+    }
+
+    /* Responsive design */
+    @media (max-width: 600px) {
+        .feedback-card {
+            padding: 15px;
+            max-width: 90%;
+        }
+
+        .feedback-customer {
+            font-size: 1.2rem;
+        }
+
+        .feedback-cruise,
+        .feedback-rating {
+            font-size: 1rem;
+        }
+    }
+
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: scale(0.9);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    .feedback-close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+</style>
+
+<!-- Main Content -->
+<div class="feedback-main">
+    <form method="post" class="feedback-form">
+        {% csrf_token %}
+        <div>
+            <div class="feedback-header">
+                <h2>Feedback and Reviews</h2>
+            </div>
+            <label for="cruise">Select Cruise:</label>
+            <select id="cruise" name="cruise">
+                <option value="" disabled selected>Select a cruise</option>
+                {% for cruise in cruises %}
+                    <option value="{{ cruise.id }}">{{ cruise.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <!-- Add this to the feedback form -->
+        <div class="rating-container">
+            <label for="rating">Rating (1-5):</label>
+            <div class="star-rating">
+                <span class="star" data-value="1"></span>
+                <span class="star" data-value="2"></span>
+                <span class="star" data-value="3"></span>
+                <span class="star" data-value="4"></span>
+                <span class="star" data-value="5"></span>
+            </div>
+            <input type="hidden" id="rating-input" name="rating" value="0">
+            <p class="rating-display">Rating: <span id="rating-value">0</span></p>
+        </div>  
+        <div>
+            <label for="comments">Your Feedback</label>
+            <textarea id="comments" name="comments" rows="4" required></textarea>
+        </div>
+        <button type="submit" class="feedback-btn">Submit Feedback</button>
+
+        <!-- Top 3 Feedbacks in Grid -->
+        <ul class="feedback-list">
+            {% for feedback in feedbacks %}
+                <li>
+                    <h4>{{ feedback.customer.user.username }}</h4>
+                    <p><strong>For Cruise:</strong> {{ feedback.cruise.name }}</p>
+                    <p>{{ feedback.comments }}</p>
+                    <p><strong>Rating:</strong> {{ feedback.rating }} / 5</p>
+                </li>
+            {% endfor %}
+        </ul>
+
+        <!-- Show All Feedback Button -->
+        {% if feedbacks|length > 0 %}
+            <button class="feedback-btn" id="show-all-feedback">Show All Feedback</button>
+        {% endif %}
+    </form>
+
+    <!-- Modal for All Feedback -->
+    <div id="feedbackModal" class="feedback-modal">
+        <div class="feedback-modal-content">
+            <div class="feedback-title">
+                <span class="feedback-close">&times;</span>
+                <h2 class="feedback-modal-header">All Feedback</h2>
+            </div>
+            <div class="feedback-modal-list">
+                <ul>
+                {% for feedback in allfeedback %}
+                    <li class="feedback-item">
+                        <div class="feedback-card">
+                            <h4>{{ feedback.customer.user.username }}</h4>
+                            <p><strong>For Cruise:</strong> {{ feedback.cruise.name }}</p>
+                            <p>{{ feedback.comments }}</p>
+                            <p><strong>Rating:</strong> {{ feedback.rating }} / 5</p>
+                        </div>                                                       
+                    </li>
+                {% endfor %}
+                </ul>
+            </div>           
+        </div>
+    </div>
+</div>
+
+<script>
+    // Modal Script
+    const modal = document.getElementById("feedbackModal");
+    const btn = document.getElementById("show-all-feedback");
+    const span = document.getElementsByClassName("feedback-close")[0];
+
+    // When the user clicks the button, open the modal
+    btn.onclick = function() {
+        modal.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+
+    // Star Rating Interaction
+    const starContainer = document.querySelector(".star-rating");
+    const stars = document.querySelectorAll(".star");
+    const ratingInput = document.getElementById("rating-input");
+    const ratingValueDisplay = document.getElementById("rating-value");
+
+    // Update stars dynamically on hover or click
+    function updateStars(rating) {
+        stars.forEach((star, index) => {
+            star.classList.remove("full", "half");
+            if (rating >= index + 1) {
+                star.classList.add("full");
+            } else if (rating > index && rating < index + 1) {
+                star.classList.add("half");
+            }
+        });
+    }
+
+    // Update rating display text
+    function updateRatingDisplay(rating) {
+        ratingValueDisplay.textContent = rating.toFixed(1); // Display rating with one decimal
+    }
+
+    // Get the precise star rating based on mouse position
+    function getStarRating(event) {
+        const star = event.target;
+        const starRect = star.getBoundingClientRect();
+        const mouseX = event.clientX - starRect.left; // Mouse X relative to the star
+        const starWidth = starRect.width;
+
+        const starValue = parseFloat(star.dataset.value); // Base value of the star
+        const rating = mouseX < starWidth / 2 ? starValue - 0.5 : starValue; // Full or half
+        return rating;
+    }
+
+    // Hover effect for dynamic star updates
+    starContainer.addEventListener("mousemove", (event) => {
+        if (event.target.classList.contains("star")) {
+            const rating = getStarRating(event);
+            updateStars(rating);
+            updateRatingDisplay(rating);
+        }
+    });
+
+    // Click to select the rating
+    starContainer.addEventListener("click", (event) => {
+        if (event.target.classList.contains("star")) {
+            const rating = getStarRating(event);
+            ratingInput.value = rating; // Save the rating in a hidden input
+            updateStars(rating);
+            updateRatingDisplay(rating);
+        }
+    });
+
+    // Reset stars and rating display on mouse leave
+    starContainer.addEventListener("mouseleave", () => {
+        const currentRating = parseFloat(ratingInput.value) || 0;
+        updateStars(currentRating);
+        updateRatingDisplay(currentRating);
+    });
+
+
+    document.querySelector(".feedback-form").addEventListener("submit", async function (event) {
+        event.preventDefault();
+    
+        const form = event.target;
+        const formData = new FormData(form);
+    
+        // Ensure rating is an integer
+        const ratingInput = form.querySelector("#rating-input");
+        let ratingValue = parseInt(ratingInput.value, 10); // Convert to integer
+        
+        // If the rating is not a valid number, we display an error message
+        if (isNaN(ratingValue) || ratingValue < 1 || ratingValue > 5) {
+            alert("Please select a valid rating between 1 and 5.");
+            return;
+        }
+    
+        // Set the valid rating value back to the hidden input field
+        ratingInput.value = ratingValue;
+    
+        try {
+            const response = await fetch(form.action, {
+                method: "POST",
+                body: formData,
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest", // Ensure the request is made as an AJAX request
+                    "X-CSRFToken": formData.get("csrfmiddlewaretoken"), // CSRF token for protection
+                },
+            });
+    
+            // Handle successful response
+            if (response.ok) {
+                const result = await response.json();
+                alert(result.message || "Feedback submitted successfully!");
+    
+                // Optionally reset the form after successful submission
+                form.reset();
+    
+                // Dynamically update the feedback list
+                const feedbackList = document.querySelector(".feedback-list");
+                const newFeedbackHTML = `
+                    <li>
+                        <h4>${result.feedback.customer}</h4>
+                        <p><strong>For Cruise:</strong> ${result.feedback.cruise}</p>
+                        <p>${result.feedback.comments}</p>
+                        <p><strong>Rating:</strong> ${result.feedback.rating} / 5</p>
+                    </li>
+                `;
+                feedbackList.insertAdjacentHTML("afterbegin", newFeedbackHTML);
+    
+                // Optionally you can show the modal after submitting feedback
+                const modal = document.getElementById("feedbackModal");
+                modal.style.display = "none"; // Close the modal
+            } else {
+                const error = await response.json();
+                alert(error.message || "Failed to submit feedback. Please try again.");
+                console.error("Feedback submission failed:", error);
+            }
+        } catch (error) {
+            console.error("Error submitting feedback:", error);
+            alert("An error occurred. Please try again later.");
+        }
+    });        
+</script>
+
+{% endblock %}
+
+

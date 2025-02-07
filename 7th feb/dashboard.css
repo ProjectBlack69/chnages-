@@ -1,0 +1,744 @@
+/* General Page Styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Ensure the page-wrapper container takes full height */
+.page-wrapper {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Ensure body takes full height inside the page wrapper */
+.page-wrapper body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.container-fluid {
+    width: 100%;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.row {
+    display: flex;
+    flex: 1;
+}
+
+/* Navbar Styling */
+.navbar {
+    position: fixed; /* Fixed position to make the navbar stay at the top */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 80px;
+    z-index: 10; /* Ensure the navbar stays above other content */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    background-color: black;
+    box-shadow: 0 4px 6px rgba(185, 177, 177, 0.1);
+}
+
+.navbar-brand {
+    font-size: 1.75rem;
+    font-weight: bold;
+    color: #ecf0f1;
+}
+
+.navbar-brand a {
+    color: white;
+    text-decoration: none;
+}
+
+.navbar.collapsed .navbar-brand {
+    display: none;
+}
+
+.navbar-icon {
+    font-size: 1.5rem; 
+    color: #ecf0f1; 
+    margin-right: 8px;
+}
+
+.navbar-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+/* Burger Menu */
+.burger-menu {
+    font-size: 1.5rem;
+    background: none;
+    border: none;
+    color: #ecf0f1;
+    cursor: pointer;
+    margin-left: 15px;
+    transition: color 0.3s ease;
+}
+
+.burger-menu:hover {
+    color: #d1d8e0;
+}
+
+.navbar.collapsed .burger-menu {
+    margin-right: 20px;
+}
+
+/* Search Bar Styling */
+.navbar-search {
+    display: flex;
+    width: 500px;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #2c3e50;
+    border-radius: 5px;
+    padding: 5px;
+    margin-left: 20px;
+}
+
+.navbar.collapsed .navbar-search{
+    margin-left: 0px;
+}
+
+/* Highlight matching search results */
+.search-highlight {
+    background-color: yellow;
+    font-weight: bold;
+}
+
+.global-search-container .search-input {
+    width: 100%;
+    padding: 8px;
+    border-radius: 4px;
+}
+
+.global-search-container .search-btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    margin-left: 8px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.global-search-container .search-btn i {
+    font-size: 16px;
+}
+
+/* Hide elements gracefully */
+[style*="display: none"] {
+    visibility: hidden;
+    opacity: 0;
+    height: 0;
+    margin: 0;
+    padding: 0;
+}
+
+
+.search-input {
+    border: none;
+    outline: none;
+    background: transparent;
+    color: #ecf0f1;
+    padding: 5px;
+    width: 200px;
+}
+
+.search-btn {
+    background: none;
+    border: none;
+    color: #ecf0f1;
+    cursor: pointer;
+}
+
+/* Right Section Styling */
+.navbar-right {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    gap: 15px;
+}
+
+.nav-icons {
+    display: flex;
+    flex-direction: row;
+}
+
+/* Dropdown Styling */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown .dropbtn {
+    background-color: transparent;
+    color: #ecf0f1;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 50%; /* Optional for circular hover effect */
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dropdown .dropbtn:hover {
+    background-color: #34495e; /* Subtle hover background */
+    color: #1abc9c; /* Consistent hover color */
+}
+
+/* Dropdown Content Styling */
+.dropdown-content {
+    display: none; /* Hidden by default */
+    position: absolute;
+    right: 0;
+    background-color: #ffffff;
+    min-width: 200px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Show dropdown when .show class is added */
+.dropdown-content.show {
+    display: block; /* Show dropdown when .show is applied */
+}
+
+.dropdown-content a {
+    color: #333;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+}
+
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+}
+
+.notification-badge {
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    font-size: 12px;
+    padding: 3px 6px;
+    position: absolute;
+    top: 0;
+    right: -5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    font-weight: bold;
+}
+
+/* Hide badge if unread count is 0 */
+.notification-badge[style="display: none;"] {
+    display: none !important;
+}
+
+.notification-dropdown .dropbtn {
+    position: relative;
+    background-color: transparent;
+    color: #ecf0f1;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 50%; /* Optional for circular hover effect */
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.notification-dropdown .dropbtn:hover {
+    background-color: #34495e; /* Subtle hover background */
+    color: #1abc9c; /* Consistent hover color */
+}
+
+.notification-dropdown .dropdown-content {
+    min-width: 250px;
+    position: absolute;
+    max-height: 300px;
+    right: 250px;
+    top: 65px;
+    background-color: #ffffff;
+    min-width: 250px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    border-radius: 8px;
+    overflow-y: auto; 
+}
+
+.notification-dropdown .dropdown-content p {
+    padding: 15px;
+    text-align: center;
+    color: #888;
+    font-size: 14px;
+    margin: 0;
+}
+
+.notification-dropdown .dropdown-content .view-all {
+    font-weight: bold;
+    text-align: center;
+    display: block;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-top: 1px solid #ddd;
+    color: #dc3545; /* Red for admin theme */
+}
+
+/* Logout Button Styling */
+.logout-container {
+    margin-left: auto; /* Pushes logout button to the far right */
+}
+
+.logout-btn {
+    background-color: #01023d;
+    color: white;
+    padding: 10px 20px;
+    margin-right: 20px;
+    width: 100px;
+    height: 40px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.logout-btn:hover {
+    background-color: #0096c7;
+    color: #ffffff;
+}
+
+/* Consistency Across Icons */
+.nav-icons .dropdown .dropbtn i {
+    font-size: 1.5rem;
+    color: #ecf0f1;
+    transition: color 0.3s ease;
+}
+
+.nav-icons .dropdown .dropbtn i:hover {
+    color: #1abc9c; /* Matches the hover color for all icons */
+}
+
+.navbar-brand:hover {
+    color: #d1d8e0;
+}
+
+/* Sidebar Styling */
+.sidebar {
+    position: fixed; /* Fixed position to make the sidebar stay on the left */
+    top: 80px;
+    left: 0;
+    width: 250px;
+    height: 100vh;
+    color: #ecf0f1;
+    border-right: 2px solid #2c3e50;
+    background-color: black;
+    display: flex;
+    flex-direction: column;
+    padding-top: 20px;
+    padding-right: 20px;
+    padding-bottom: 30px;
+    overflow-y: auto;
+    padding-left: 20px;
+    transition: width 0.3s ease;
+    z-index: 999; /* Ensure the sidebar stays below the navbar */
+}
+
+.sidebar.collapsed {
+    width: 80px;
+}
+
+.sidebar.collapsed .profile-section,
+.sidebar.collapsed .nav-text,
+.sidebar.collapsed .sidebar-search {
+    display: none;
+}
+
+/* Profile Section Container */
+.profile-section {
+    text-align: center;
+    padding: 20px 0;
+    background-color: #2c3e50; /* Dark background for profile section */
+    border-radius: 10px;
+    margin-bottom: 20px;
+    color: #ecf0f1;
+}
+
+/* Avatar Image Styling */
+.profile-avatar .avatar-image {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 3px solid #ecf0f1; /* White border around avatar */
+}
+
+/* Profile Name and Role Styling */
+.profile-name {
+    margin-top: 10px;
+}
+
+.profile-name .username {
+    color: #000;
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin: 0;
+}
+
+.profile-name .user-role {
+    color: #c3eaee; /* Muted text color for role */
+    font-size: 0.875rem;
+    margin-top: 5px;
+    margin: 0;
+}
+
+/* Profile Actions Button Styling */
+.profile-actions {
+    margin-top: 15px;
+}
+
+.profile-button {
+    display: inline-block;
+    padding: 6px 12px;
+    font-size: 0.875rem;
+    color: #ecf0f1;
+    border: 1px solid #ecf0f1;
+    border-radius: 20px;
+    text-decoration: none;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.profile-button:hover {
+    background-color: #30282f; /* Hover background color */
+    color: #ffffff;
+}
+
+/* Search Bar Styling */
+.search-bar {
+    padding: 10px;
+    margin: 10px 0;
+    position: relative;
+    display: flex;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+/* Search Bar Input */
+.search-bar input {
+    width: 100%;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.search-bar input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+/* Search Icon */
+.search-bar .search-icon {
+    display: none; /* Hidden by default */
+    background: none;
+    border: none;
+    font-size: 1rem;
+    color: #007bff;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    align-items: center;
+    justify-content: center;
+    margin: 10px 0;
+    padding: 8px 16px;
+    text-align: center;
+}
+
+/* Sidebar Collapsed: Show Search Icon */
+.sidebar.collapsed .search-bar .search-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto; /* Center the icon */
+}
+
+/* Hover Effect */
+.search-bar .search-icon:hover {
+    color: white;
+    border-radius: 5px;
+    background-color: #1abc9c;
+    transform: scale(1.1);
+}
+
+/* Hide Input When Collapsed */
+.sidebar.collapsed .search-bar input {
+    display: none; /* Hide input when sidebar is collapsed */
+    opacity: 0;
+    width: 0;
+    pointer-events: none;
+}
+
+/* Ensure Consistent Alignment in Collapsed Sidebar */
+.sidebar.collapsed .search-bar {
+    display: flex;
+    justify-content: center; /* Center the icon within its container */
+    align-items: center; /* Vertically align icon */
+    margin: 0; /* Remove extra margin */
+    padding: 0; /* Adjust padding to fit icon alignment */
+}
+
+.nav {
+    padding-left: 0;
+    list-style: none;
+}
+
+.nav-item {
+    width: 100%;
+}
+
+.nav-link {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row-reverse;
+    color: #d1d8e0;
+    padding: 8px 16px;
+    margin: 10px 0;
+    text-decoration: none;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    font-size: 1rem;
+}
+
+.sidebar.collapsed .nav-link {
+    justify-content: center;
+}
+
+.sidebar.collapsed .nav-link i {
+    margin-right: 0; 
+}
+
+.nav-link i {
+    font-size: 1.2rem;
+    margin-right: 10px;
+}
+
+.nav-link:hover {
+    color: #ffffff;
+    background-color: #1abc9c;
+    border-radius: 4px;
+}
+
+/* Main Content Styling */
+.main-content {
+    flex: 1;
+    height: 100vh;
+    padding: 30px;
+    width: calc(100% - 250px); /* Matches the expanded sidebar width */
+    background-color: #e0f7fa;
+    color: #2c3e50;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin-left: 250px; /* Prevents overlap with the expanded sidebar */
+    margin-top: 80px;
+    overflow-y: auto;
+    transition: margin-left 0.3s ease, width 0.3s ease; /* Smooth animation */
+}
+
+.sidebar.collapsed + .main-content {
+    margin-left: 80px; /* Matches the collapsed sidebar width */
+    width: calc(100% - 80px); /* Adjusts the main content width */
+}
+
+.Dashboard-header {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    font-size: 2rem;
+    color: #2c3e50;
+    font-weight: 1200;
+}
+
+/* Card Styles */
+.card {
+    height: 150px;
+    margin-bottom: 20px;
+    border: none;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+.card-body {
+    padding: 15px;
+    text-align: center;
+}
+
+.card-title {
+    font-size: 1.8rem;
+    margin-top: 10px;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.card-text {
+    margin-top: 5px;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.card-link {
+    margin-top: 5px!important;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.card a {
+    color: #ffffff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.card a:hover {
+    color: #d1d8e0;
+}
+
+.card-link-wrapper {
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-decoration: none; /* Remove underline from the link */
+}
+
+.card-link-wrapper:hover .card {
+    background-color: rgba(0, 0, 0, 0.1); /* Subtle hover effect */
+}
+
+/* Gradient Card Backgrounds */
+.card.bg-gradient-deep-ocean {
+    background: linear-gradient(to right, #004e92, #000428); /* Deep ocean shades */
+    color: #ffffff;
+}
+
+.card.bg-gradient-tropical-water {
+    background: linear-gradient(to right, #56ccf2, #2f80ed); /* Vibrant tropical waters */
+    color: #ffffff;
+}
+
+.card.bg-gradient-sandy-beach {
+    background: linear-gradient(to right, #fbc2eb, #a6c1ee); /* Warm beach transition */
+    color: #ffffff;
+}
+
+/* Utility Classes */
+.text-white {
+    color: #ffffff !important;
+}
+
+.mt-1 { margin-top: 0.25rem; }
+.mb-1 { margin-bottom: 0.25rem; }
+.ps-1 { padding-left: 0.25rem; }
+.pe-1 { padding-right: 0.25rem; }
+
+/* Category Section */
+.category-section {
+    margin-top: 40px;
+}
+
+.category-section h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #2c3e50;
+}
+
+.cards-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* Space between cards */
+    margin-top: 24px;
+}
+
+.card-container {
+    flex: 1 1 calc(33.333% - 20px); /* Three cards per row, with space between */
+    max-width: calc(33.333% - 20px);
+}
+
+.error-message {
+    color: red;
+    font-size: 14px;
+    margin-bottom: 10px;
+    display: none;
+}
+
+/* Responsive Adjustments for Cards */
+@media (max-width: 768px) {
+    .card-container {
+        flex: 1 1 calc(50% - 20px); /* Two cards per row on tablets */
+    }
+}
+
+@media (max-width: 576px) {
+    .card-container {
+        flex: 1 1 100%; /* One card per row on small screens */
+    }
+}
+
+/* Utility Classes */
+.text-white {
+    color: #ffffff !important;
+}
+
+.mt-1 { margin-top: 0.25rem; }
+.mb-1 { margin-bottom: 0.25rem; }
+.ps-1 { padding-left: 0.25rem; }
+.pe-1 { padding-right: 0.25rem; }
+
+/* Scrollbar Styles */
+.sidebar::-webkit-scrollbar {
+    width: 12px; /* Wider scrollbar */
+}
+
+/* Scrollbar track (background) */
+.sidebar::-webkit-scrollbar-track {
+    background-color: #000; /* Black background for the scrollbar track */
+    border-radius: 10px;
+}
+
+/* Scrollbar thumb (the draggable part) */
+.sidebar::-webkit-scrollbar-thumb {
+    background-color: #555; /* Darker gray for the thumb */
+    border-radius: 10px;
+}
+
+/* Hover effect for the scrollbar thumb */
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background-color: #333; /* Darker gray when hovering */
+}
+
+/* Scrollbar arrow buttons (up and down arrows) */
+.sidebar::-webkit-scrollbar-button {
+    background-color: #444; /* Slightly darker than thumb */
+}
+
+/* Optional: if you want to style the scrollbar corners */
+.sidebar::-webkit-scrollbar-corner {
+    background-color: #000; /* Keep the corner black */
+}

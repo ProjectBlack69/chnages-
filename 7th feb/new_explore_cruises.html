@@ -1,0 +1,171 @@
+{% extends 'customer/custabout.html' %}
+
+{% block title %}Explore Cruises{% endblock %}
+
+{% block about_extra %}
+<style>
+    /* Modal Styling */
+    .authmodal {
+        display: none; /* Hidden by default */
+        position: fixed;
+        z-index: 1000; /* On top of everything */
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8); /* Darker semi-transparent background */
+        justify-content: center;
+        align-items: center;
+        backdrop-filter: blur(5px); /* Slight blur for a modern effect */
+    }
+
+    .auth-modal-content {
+        background: linear-gradient(135deg, #ffffff, #f9f9f9); /* Soft gradient for elegance */
+        padding: 30px;
+        border-radius: 12px; /* Softer corners */
+        width: 450px;
+        text-align: center;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); /* Enhanced shadow for depth */
+        animation: slideDown 0.4s ease-out; /* Smooth animation */
+        position: relative; /* For close button alignment */
+    }
+
+    .auth-modal-content h2 {
+        font-size: 2rem; /* Larger and more modern */
+        margin-bottom: 15px;
+        color: #1d3557; /* Deep blue for elegance */
+        font-family: 'Poppins', sans-serif; /* Modern font */
+        text-transform: uppercase;
+        letter-spacing: 1.2px;
+    }
+
+    .auth-modal-content p {
+        font-size: 1.3rem; /* Slightly larger for better readability */
+        margin-bottom: 25px;
+        line-height: 1.8;
+        color: #4a4a4a; /* Neutral gray for subtlety */
+        font-family: 'Roboto', sans-serif; /* Clean font */
+    }
+
+    .exp-auth-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 20px; /* Increased spacing for a modern look */
+    }
+
+    .exp-auth-buttons button {
+        padding: 15px 35px; /* Larger buttons for better accessibility */
+        border: none;
+        border-radius: 10px;
+        font-size: 1.2rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: transform 0.3s ease, background-color 0.3s ease;
+    }
+
+    .exp-auth-buttons .btn-primary {
+        background-color: #1d4ed8;
+        color: #ffffff;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .exp-auth-buttons .btn-primary:hover {
+        background-color: #1e40af;
+        transform: scale(1.05); /* Subtle scaling on hover */
+    }
+
+    .exp-auth-buttons .btn-secondary {
+        background-color: #fbbf24;
+        color: #111827; /* Darker text for contrast */
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .exp-auth-buttons .btn-secondary:hover {
+        background-color: #f59e0b;
+        transform: scale(1.05);
+    }
+
+    .auth-close {
+        position: absolute;
+        top: 15px;
+        right: 20px;
+        font-size: 1.8rem;
+        cursor: pointer;
+        color: #4a4a4a;
+        transition: color 0.3s ease;
+    }
+
+    .auth-close:hover {
+        color: #1d3557; /* Deep blue hover effect */
+    }
+
+    @keyframes slideDown {
+        from {
+            transform: translateY(-50px);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+</style>
+<div class="explore-cruises">
+    <div class="explore-cruises-container">
+        <header class="hero-banner">
+            <h1>Welcome to Our Cruise Adventure!</h1>
+            <p>Explore and book your next journey. Select a cruise to start your adventure.</p>
+        </header>
+        <section class="cruise-list">
+            <h2>All Cruises</h2>
+            {% if cruises %}
+            <div class="cruise-grid">
+                {% for cruise in cruises %}
+                <div class="cruise-card">
+                    <div class="cruise-image">
+                        <img src="{{ cruise.image_url }}" alt="{{ cruise.name }}">
+                    </div>
+                    <h3>{{ cruise.name }}</h3>
+                    <p class="cruise-description">{{ cruise.description }}</p>
+                    <div class="excruise-details">
+                        <p><strong>Destinations:</strong> {{ cruise.destination }}</p>
+                        <p><strong>Departure Date:</strong> {{ cruise.start_date|date:"d M Y" }}</p>
+                        <p><strong>Price:</strong> ${{ cruise.price_per_person }}</p>
+                        <p><strong>Duration:</strong> {{ cruise.get_duration }} days</p>
+                        <a href="javascript:void(0);" class="btn btn-primary" onclick="openAuthModal()">Book Now</a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p>No cruises are available at the moment. Please check back later!</p>
+            {% endif %}
+        </section>
+    </div>
+</div>
+
+<!-- Modal for Login/Signup -->
+<div id="authModal" class="authmodal">
+    <div class="auth-modal-content">
+        <span class="auth-close" onclick="closeAuthModal()">&times;</span>
+        <h2>BOOK NOW</h2>
+        <p>Enjoy our luxurious  </p>
+        <div class="exp-auth-buttons">
+            <button class="btn-primary" onclick="openModal('loginModal')">Login</button>
+            <button class="btn-secondary" onclick="openModal('signupModal')">Sign Up</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openAuthModal() {
+        document.getElementById("authModal").style.display = "flex";
+    }
+    
+    function closeAuthModal() {
+        document.getElementById("authModal").style.display = "none";
+    }
+</script>
+    
+{% endblock %}

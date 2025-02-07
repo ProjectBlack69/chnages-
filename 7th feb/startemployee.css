@@ -1,0 +1,121 @@
+/* Body and page settings */
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: Arial, sans-serif;
+  }
+  
+  /* Background settings */
+  .container {
+    height: 100%;
+    background: url('../assets/startemp3.jpg') no-repeat center center fixed;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center; 
+    position: relative;
+    z-index: 2;
+    overflow-y: hidden;
+  }
+  
+  /* Content styling */
+  .content {
+    color: white;
+    padding: 40px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    width: 80%;
+    max-width: 600px;
+    backdrop-filter: blur(8px); 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); 
+    position: relative;
+    z-index: 3;
+  }
+  
+  h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    font-family: "Poppins";
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.6);
+  }
+  
+  p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+  }
+  
+  .buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px; /* Adds space between the buttons */
+  }
+  
+  /* Button styles */
+  .btn {
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+    border: none;
+    padding: 15px 25px;
+    font-size: 1.1rem;
+    border-radius: 8px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 45%;
+    text-align: center;
+    font-family: "Poppins";
+  }
+  
+  .btn:hover {
+    color: #fff;
+    border-color: #fff;
+    background: rgba(255, 255, 255, 0.15);
+  }
+  
+  @media (max-width: 768px) {
+    .content {
+      width: 90%;
+    }
+  
+    .btn {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+  
+    .buttons {
+      flex-direction: column; 
+      gap: 10px; 
+    }
+  }
+
+/* Additional styles for the "Go Back" link */
+.go-back-link {
+  margin-top: 20px; /* Space above the link */
+}
+
+.go-back-btn {
+  background-color: #ffffff;
+  color: black;
+  text-decoration: none;
+  padding: 15px 25px;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  margin-left: -10px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: inline-block;
+  text-align: center;
+  font-family: "Poppins";
+}
+
+.go-back-btn:hover {
+  color: #fff;
+    border-color: #fff;
+    background: rgba(255, 255, 255, 0.15);
+}

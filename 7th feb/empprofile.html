@@ -1,0 +1,258 @@
+{% extends 'employee/dashboard.html' %} {% load static %} {% block content %}
+<section class="employee-profile-main">
+  <div class="profile-container">
+    <!-- First Box -->
+    <div class="emp-box">
+      <div class="employee-profile" onclick="triggerEmployeeFileInput()">
+        <img 
+            src="{% if employee.profile_picture %}{{ employee.profile_picture.url }}{% else %}{% static 'assets/default-profile.avif' %}{% endif %}" 
+            alt="Employee Profile Picture"
+        />
+        <input 
+            type="file" 
+            id="employeeProfilePictureInput"
+            name="profile_picture" 
+            style="display: none;" 
+            onchange="handleEmployeeFileChange(event)">
+      </div>
+      <div class="employeeName" id="employeeName">
+        {{ employee.first_name }} {{ employee.last_name }}
+      </div>
+      <div class="employeeId" id="employeeId">
+        ID: {{ employee.employee_id }}
+      </div>
+      <div class="department" id="department">{{ employee.department }}</div>
+      <div class="employeeJobTitle" id="employeeJobTitle">
+        {{ employee.job_role }}
+      </div>
+      <div
+        class="employee-edit-btn"
+        id="edit_details"
+        onclick="employeeOpenModal()"
+      >
+        Edit Profile
+      </div>
+      <div
+        class="employee-password-btn"
+        id="edit_password"
+        onclick="employeeOpenPasswordModal()"
+      >
+        Change Password
+      </div>
+    </div>
+    <!-- Second Box -->
+    <div class="emp-box">
+      <div class="personal-data"><p>Personal Data</p></div>
+
+      <table class="employee-personal-details">
+        <tr>
+          <td>Full Name</td>
+          <td id="employeeName">
+            {{ employee.first_name }} {{ employee.last_name }}
+          </td>
+        </tr>
+        <tr>
+          <td>Email</td>
+          <td id="employeeEmail">{{ employee.user.email }}</td>
+        </tr>
+        <tr>
+          <td>Date of Birth</td>
+          <td id="employeeDob">{{ employee.date_of_birth }}</td>
+        </tr>
+        <tr>
+          <td>Phone Number</td>
+          <td id="employeePhone">{{ employee.phone }}</td>
+        </tr>
+        <tr>
+          <td>Address</td>
+          <td id="employeeAddress">{{ employee.address }}</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- third Box -->
+    <div class="emp-box">
+      <div class="additional-data">Additional Data</div>
+
+      <table class="employee-additional-details-table">
+        <tr>
+          <td>Employee ID</td>
+          <td id="employeeId">{{ employee.employee_id }}</td>
+        </tr>
+        <tr>
+          <td>Department</td>
+          <td id="employeeDepartment">{{ employee.department }}</td>
+        </tr>
+        <tr>
+          <td>Job Title</td>
+          <td id="employeeJobTitle">{{ employee.job_role }}</td>
+        </tr>
+        <tr>
+          <td>Skills</td>
+          <td id="employeeSkills">{{ employee.skills }}</td>
+        </tr>
+        <tr>
+          <td>Linkedin</td>
+          <td id="employeeLinkedin">{{ employee.linkedin_url }}</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- fourth box -->
+    <div class="emp-box">
+      <i class="fa-solid fa-globe"><p>www.luxuarycruise.com</p></i><br />
+      <i class="fa-brands fa-facebook"
+        ><p><strong>@luxuarycruise</strong></p></i
+      ><br />
+      <i class="fa-brands fa-twitter"
+        ><p><strong>@luxuarycruise</strong></p></i
+      ><br />
+      <i class="fa-brands fa-instagram"
+        ><p><strong>@luxuarycruise</strong></p></i
+      ><br />
+      <i class="fa-solid fa-envelope"><p>luxuarycruise@gmail.com</p></i>
+    </div>
+  </div>
+
+  <!-- Modal for Editing Details -->
+  <div class="employee-overlay" id="employeeOverlay"></div>
+  <div class="employee-modal" id="employeeEditModal">
+    <header class="employee-modal-header-edit">
+      <h2>Edit Personal Details</h2>
+    </header>
+    <div class="employee-modal-content">
+      <form id="employeeEditForm">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="employeeEditName">Full Name</label>
+          <input
+            type="text"
+            id="employeeEditName"
+            value="{{ employee.first_name }} {{ employee.last_name }}"
+          />
+        </div>
+        <div class="form-group">
+          <label for="employeeEditEmployeeId">Employee ID</label>
+          <input
+            type="text"
+            id="employeeEditEmployeeId"
+            value="{{ employee.employee_id }}"
+          />
+        </div>
+        <div class="form-group">
+          <label for="employeeEditJobTitle">Job Title</label>
+          <input
+            type="text"
+            id="employeeEditJobTitle"
+            value="{{ employee.job_role }}"
+          />
+        </div>
+        <div class="form-group">
+          <label for="employeeEditDepartment">Department</label>
+          <input
+            type="text"
+            id="employeeEditDepartment"
+            value="{{ employee.department }}"
+          />
+        </div>
+        <div class="form-group">
+          <label for="employeeEditEmail">Email Address</label>
+          <input
+            type="email"
+            id="employeeEditEmail"
+            value="{{ employee.user.email }}"
+          />
+        </div>
+        <div class="form-group">
+          <label for="employeeEditPhone">Phone Number</label>
+          <input
+            type="text"
+            id="employeeEditPhone"
+            value="{{ employee.phone }}"
+          />
+        </div>
+        <div class="form-group">
+          <label for="employeeEditSkills">Skills</label>
+          <input
+            type="text"
+            id="employeeEditSkills"
+            value="{{ employee.skills }}"
+          />
+        </div>
+        <div class="form-group">
+          <label for="employeeEditAddress">Address</label>
+          <input
+            type="text"
+            id="employeeEditAddress"
+            value="{{ employee.address }}"
+          />
+        </div>
+        <div class="form-group">
+          <label for="employeeEditDob">Date of Birth</label>
+          <input
+            type="date"
+            id="employeeEditDob"
+            value="{{ employee.date_of_birth }}"
+            disabled
+          />
+        </div>
+        <div class="form-group">
+          <label for="employeeEditLinkedin">LinkedIn URL</label>
+          <input
+            type="text"
+            id="employeeEditLinkedin"
+            value="{{ employee.linkedin_url }}"
+          />
+        </div>
+      </form>
+    </div>
+
+    <footer class="employee-modal-footer">
+      <button onclick="employeeSaveChanges()" class="save-btn">
+        Save Changes
+      </button>
+      <button onclick="employeeCloseModal()" class="cancel-btn">Cancel</button>
+    </footer>
+  </div>
+
+  <!-- Modal for Changing Password -->
+  <div class="employee-overlay" id="passwordOverlay"></div>
+  <div class="employee-modal" id="passwordChangeModal">
+    <header class="employee-modal-header-password">
+      <h2>Change Password</h2>
+    </header>
+    <div class="employee-modal-content">
+      <form id="passwordChangeForm">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="currentPassword">Current Password</label>
+          <input type="password" id="currentPassword" required />
+        </div>
+        <div class="form-group">
+          <label for="newPassword">New Password</label>
+          <input type="password" id="newPassword" required />
+        </div>
+        <div class="form-group">
+          <label for="confirmNewPassword">Confirm New Password</label>
+          <input type="password" id="confirmNewPassword" required />
+        </div>
+      </form>
+    </div>
+    <footer class="employee-modal-footer">
+      <button onclick="employeeChangePassword()" class="save-btn">
+        Change Password
+      </button>
+      <button onclick="employeeClosePasswordModal()" class="cancel-btn">
+        Cancel
+      </button>
+    </footer>
+  </div>
+  <!-- Modal message -->
+  <div class="modalBoxOverlay"></div>
+  <div class="modalBox">
+    <h2 id="alertTitle"></h2>
+    <p id="alertMsg"></p>
+    <button id="modalOk">OK</button>
+  </div>
+</section>
+{% endblock %}
